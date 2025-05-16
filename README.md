@@ -81,6 +81,8 @@ Die Lösung von https://github.com/spatialaudio/python-sounddevice/issues/173#is
 
 Als nächste versuche ich mal https://github.com/ggml-org/whisper.cpp, das hat bei Andreas zumindest auf dem Raspberry funktioniert.
 
+Ich könnte auch versuchen, wie in https://github.com/juanmc2005/diart/issues/195#issuecomment-1807267955 angefangen, ein Docker-Image aufzusetzen. Dabei umgehe ich vielleicht die Mikrofon-Probleme.
+
 ## Erkenntnisse
 
 Python 3.10 wird verwendet, weil sich `diart` in der Installationsanleitung darauf bezieht.

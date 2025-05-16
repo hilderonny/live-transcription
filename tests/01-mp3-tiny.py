@@ -8,7 +8,7 @@ from faster_whisper import WhisperModel
 print('Loading faster_whisper ...')
 
 device = 'cuda' # 'cpu'
-file_path = './test.mp3'
+file_path = 'tests/russisch.mp3'
 model = 'tiny'
 
 faster_whisper_model = WhisperModel( model_size_or_path = model, device = device, compute_type = 'int8', download_root='./data/faster-whisper/' )

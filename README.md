@@ -11,6 +11,12 @@ Basiert auf https://github.com/hilderonny/faster-whisper.
 4. [cuBLAS.and.cuDNN_CUDA11_win_v4.7z](https://github.com/Purfview/whisper-standalone-win/releases/download/libs/cuBLAS.and.cuDNN_CUDA11_win_v4.7z) herunterladen und die enthaltenen DLLs nach `python/Lib/site-packages/ctranslate` entpacken
 5. [vc_redist.x64.exe](./vc_redist.x64.exe]) bei Bedarf installieren
 
+## Nächste Schritte
+
+**diart** und **pyannote** erscheinen mir vielversprechend.
+Die **pyannote** Modelle lassen sich Offline laden, ohne dass man die Online-Lizenzabfrage machen muss.
+Ich sollte mal die Demo von [speaker aware transcription](https://medium.com/better-programming/color-your-captions-streamlining-live-transcriptions-with-diart-and-openais-whisper-6203350234ef) zum Laufen bringen und im Browser einfach mal ein Talkrundenvideo laufen lassen und dieses mit dem Mikrofon aufnehmen. Mal sehen, wie schnell und genau die Sprecheridentifizierung und Transkription funktioniert.
+
 ## Erkenntnisse
 
 Mit faster-whisper 0.8.0 kann man die Segmentiertung nicht beeinflussen. Version 1.1.1 hat mehr Funktionen, zum Beispiel auch die segmentweise Spracherkennung.
@@ -26,6 +32,8 @@ Kann ich die Sprecheridentifizierung mit pyannote.audio verwenden, um Segmente f
 - [silero VAD examples](https://github.com/snakers4/silero-vad/wiki/Examples-and-Dependencies#dependencies)
 - [diart audio stream processing](https://github.com/juanmc2005/diart)
 - [speaker aware transcription](https://medium.com/better-programming/color-your-captions-streamlining-live-transcriptions-with-diart-and-openais-whisper-6203350234ef)
+- https://huggingface.co/pyannote/segmentation
+- https://huggingface.co/pyannote/embedding
 
 ## Tests
 

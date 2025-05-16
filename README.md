@@ -79,6 +79,8 @@ Die Lösung von https://github.com/spatialaudio/python-sounddevice/issues/173#is
 
 ## Nächste Schritte
 
+Grundidee: https://medium.com/better-programming/color-your-captions-streamlining-live-transcriptions-with-diart-and-openais-whisper-6203350234ef
+
 Als nächste versuche ich mal https://github.com/ggml-org/whisper.cpp, das hat bei Andreas zumindest auf dem Raspberry funktioniert.
 
 Ich könnte auch versuchen, wie in https://github.com/juanmc2005/diart/issues/195#issuecomment-1807267955 angefangen, ein Docker-Image aufzusetzen. Dabei umgehe ich vielleicht die Mikrofon-Probleme.

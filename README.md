@@ -6,18 +6,87 @@ Basiert auf https://github.com/hilderonny/faster-whisper.
 ## Installation
 
 1. Dieses Repository klonen
-2. [python-3.11.9.zip](python-3.11.9.zip) entpacken und den enthaltenen Unterordner in `./python` umbenennen
-3. Python Bibliotheken installieren mit `python\python -m pip install faster-whisper==0.8.0`
-4. [cuBLAS.and.cuDNN_CUDA11_win_v4.7z](https://github.com/Purfview/whisper-standalone-win/releases/download/libs/cuBLAS.and.cuDNN_CUDA11_win_v4.7z) herunterladen und die enthaltenen DLLs nach `python/Lib/site-packages/ctranslate` entpacken
-5. [vc_redist.x64.exe](./vc_redist.x64.exe]) bei Bedarf installieren
+2. [python-3.10.11.zip](python-3.10.11.zip) entpacken und den enthaltenen Unterordner in `./python` umbenennen
+3. Python Bibliotheken installieren mit `python\python -m pip install diart`
+4. Auf HuggingFace einen [Token erstellen](https://huggingface.co/settings/tokens)
+5. `python\Scripts\huggingface-cli login` ausführen und den Token eintragen
+6. `python-3.10.11\python tests\03-diart.py` ausführen
+
+Ergebnis: Geht nicht, es wird eine Rekursionsfehlermeldung ausgegeben. Das passiert, wenn das LazyModule `speechbrain.inference` geladen werden soll.
+
+```
+  File "C:\github\hilderonny\live-transcription\python-3.10.11\lib\site-packages\speechbrain\utils\importutils.py", line 172, in ensure_module
+    module = super().ensure_module(stacklevel + 1)
+  File "C:\github\hilderonny\live-transcription\python-3.10.11\lib\site-packages\speechbrain\utils\importutils.py", line 80, in ensure_module
+    importer_frame = inspect.getframeinfo(sys._getframe(stacklevel + 1))
+  File "inspect.py", line 1620, in getframeinfo
+  File "inspect.py", line 829, in getsourcefile
+  File "inspect.py", line 869, in getmodule
+  File "C:\github\hilderonny\live-transcription\python-3.10.11\lib\site-packages\speechbrain\utils\importutils.py", line 112, in __getattr__
+    return getattr(self.ensure_module(1), attr)
+  File "C:\github\hilderonny\live-transcription\python-3.10.11\lib\site-packages\speechbrain\utils\importutils.py", line 172, in ensure_module
+    module = super().ensure_module(stacklevel + 1)
+  File "C:\github\hilderonny\live-transcription\python-3.10.11\lib\site-packages\speechbrain\utils\importutils.py", line 80, in ensure_module
+    importer_frame = inspect.getframeinfo(sys._getframe(stacklevel + 1))
+  File "inspect.py", line 1620, in getframeinfo
+  File "inspect.py", line 829, in getsourcefile
+  File "inspect.py", line 869, in getmodule
+  File "C:\github\hilderonny\live-transcription\python-3.10.11\lib\site-packages\speechbrain\utils\importutils.py", line 112, in __getattr__
+    return getattr(self.ensure_module(1), attr)
+  File "C:\github\hilderonny\live-transcription\python-3.10.11\lib\site-packages\speechbrain\utils\importutils.py", line 172, in ensure_module
+    module = super().ensure_module(stacklevel + 1)
+  File "C:\github\hilderonny\live-transcription\python-3.10.11\lib\site-packages\speechbrain\utils\importutils.py", line 80, in ensure_module
+    importer_frame = inspect.getframeinfo(sys._getframe(stacklevel + 1))
+  File "inspect.py", line 1620, in getframeinfo
+  File "inspect.py", line 829, in getsourcefile
+  File "inspect.py", line 861, in getmodule
+  File "inspect.py", line 845, in getabsfile
+  File "ntpath.py", line 566, in abspath
+  File "ntpath.py", line 512, in normpath
+  File "ntpath.py", line 169, in splitdrive
+RecursionError: maximum recursion depth exceeded while calling a Python object
+```
+
+Versuch mit Conda:
+
+1. Installation von [Miniconda3-latest-Windows-x86_64](Miniconda3-latest-Windows-x86_64) mit Adminsitratorrechten und allen Checkboxen aktiviert
+2. `conda env create -f environment.yml`(dauert eine Weile ohne Rückmeldung)
+3. `conda activate diart`
+4. `diart.stream .\tests\von-neumann-sonde.mp3`- Funktioniert, es wird etwas angezeigt
+5. `diart.stream microphone` funktioniert nicht, `sounddevice`bringt eine Fehlermeldung:
+
+```
+Traceback (most recent call last):
+  File "C:\Users\Ronny\.conda\envs\diart\lib\runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "C:\Users\Ronny\.conda\envs\diart\lib\runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "C:\Users\Ronny\.conda\envs\diart\Scripts\diart.stream.exe\__main__.py", line 7, in <module>
+  File "C:\Users\Ronny\.conda\envs\diart\lib\site-packages\diart\console\stream.py", line 130, in run
+    audio_source = src.MicrophoneAudioSource(config.step, device)
+  File "C:\Users\Ronny\.conda\envs\diart\lib\site-packages\diart\sources.py", line 172, in __init__
+    self._mic_stream = sd.InputStream(
+  File "C:\Users\Ronny\.conda\envs\diart\lib\site-packages\sounddevice.py", line 1440, in __init__
+    _StreamBase.__init__(self, kind='input', wrap_callback='array',
+  File "C:\Users\Ronny\.conda\envs\diart\lib\site-packages\sounddevice.py", line 909, in __init__
+    _check(_lib.Pa_OpenStream(self._ptr, iparameters, oparameters,
+  File "C:\Users\Ronny\.conda\envs\diart\lib\site-packages\sounddevice.py", line 2794, in _check
+    raise PortAudioError(errormsg, err, hosterror_info)
+sounddevice.PortAudioError: Error opening InputStream: Unanticipated host error [PaErrorCode -9999]: 'Undefined external error.' [MME error 1]
+```
+
+Die Lösung von https://github.com/spatialaudio/python-sounddevice/issues/173#issuecomment-2331978534 hat auch nichts gebracht.
 
 ## Nächste Schritte
 
-**diart** und **pyannote** erscheinen mir vielversprechend.
-Die **pyannote** Modelle lassen sich Offline laden, ohne dass man die Online-Lizenzabfrage machen muss.
-Ich sollte mal die Demo von [speaker aware transcription](https://medium.com/better-programming/color-your-captions-streamlining-live-transcriptions-with-diart-and-openais-whisper-6203350234ef) zum Laufen bringen und im Browser einfach mal ein Talkrundenvideo laufen lassen und dieses mit dem Mikrofon aufnehmen. Mal sehen, wie schnell und genau die Sprecheridentifizierung und Transkription funktioniert.
+Als nächste versuche ich mal https://github.com/ggml-org/whisper.cpp, das hat bei Andreas zumindest auf dem Raspberry funktioniert.
 
 ## Erkenntnisse
+
+Python 3.10 wird verwendet, weil sich `diart` in der Installationsanleitung darauf bezieht.
+
+
+
 
 Mit faster-whisper 0.8.0 kann man die Segmentiertung nicht beeinflussen. Version 1.1.1 hat mehr Funktionen, zum Beispiel auch die segmentweise Spracherkennung.
 

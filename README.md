@@ -11,6 +11,21 @@ Basiert auf https://github.com/hilderonny/faster-whisper.
 4. [cuBLAS.and.cuDNN_CUDA11_win_v4.7z](https://github.com/Purfview/whisper-standalone-win/releases/download/libs/cuBLAS.and.cuDNN_CUDA11_win_v4.7z) herunterladen und die enthaltenen DLLs nach `python/Lib/site-packages/ctranslate` entpacken
 5. [vc_redist.x64.exe](./vc_redist.x64.exe]) bei Bedarf installieren
 
+## Erkenntnisse
+
+Mit faster-whisper 0.8.0 kann man die Segmentiertung nicht beeinflussen. Version 1.1.1 hat mehr Funktionen, zum Beispiel auch die segmentweise Spracherkennung.
+
+Ebenso benötigt die Erkennung der Sprache relativ viel Zeit. Daher sollte beim Verarbeiten kleiner Audioschnipsel nicht jedesmal die Sprache erkannt werden, sondern nur zu Beginn der Aufnahme. Oder ich zeige eine Selektbox mit Sprachen an, deren Änderung sich sofort auf den nächsten Chunk auswirkt.
+
+Ich bräuchte vor faster-whisper eine Segmentierung, etwa durch silero VAD. Das kann ruhig sehr empfindlich eingestellt sein, ich möchte halt nur nicht, dass die Audioschnipsel genau in einem Wort unterbrechen.
+
+Kann ich die Sprecheridentifizierung mit pyannote.audio verwenden, um Segmente für faster-whisper vorzubereiten?
+
+- [sounddevice callback streams](https://python-sounddevice.readthedocs.io/en/0.5.1/usage.html#callback-streams)
+- [pyannote diarization mopdel](https://huggingface.co/pyannote/speaker-diarization-3.1)
+- [silero VAD examples](https://github.com/snakers4/silero-vad/wiki/Examples-and-Dependencies#dependencies)
+- [diart audio stream processing](https://github.com/juanmc2005/diart)
+- [speaker aware transcription](https://medium.com/better-programming/color-your-captions-streamlining-live-transcriptions-with-diart-and-openais-whisper-6203350234ef)
 
 ## Tests
 
